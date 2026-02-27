@@ -839,7 +839,15 @@
     if (!firstName) { msg.textContent = 'Please enter your first name.'; return; }
     if (!lastName) { msg.textContent = 'Please enter your last name.'; return; }
     if (!email) { msg.textContent = 'Please enter your email.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'Please enter a valid email address.';
+      return;
+    }
     if (!phone) { msg.textContent = 'Please enter your phone number.'; return; }
+    if (!/^\+?[0-9\s\-()]{7,20}$/.test(phone)) {
+      msg.textContent = 'Please enter a valid phone number.';
+      return;
+    }
 
     msg.textContent = 'Submitting...';
 
