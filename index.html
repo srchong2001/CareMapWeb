@@ -867,6 +867,10 @@
       document.getElementById('last-name-input').value = '';
       document.getElementById('email-input').value = '';
       document.getElementById('phone-input').value = '';
+      // Send welcome email (fire-and-forget; user is already on the list)
+      supabase.functions.invoke('send-waitlist-email', {
+        body: { email, first_name: firstName },
+      }).then(({ error }) => { if (error) console.warn('Welcome email:', error); });
     }
   };
 </script>
