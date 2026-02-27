@@ -868,9 +868,15 @@
       document.getElementById('email-input').value = '';
       document.getElementById('phone-input').value = '';
       // Send welcome email (fire-and-forget; user is already on the list)
+      console.log('[CareMap] Sending welcome email to', email);
       supabase.functions.invoke('send-waitlist-email', {
         body: { email, first_name: firstName },
-      }).then(({ error }) => { if (error) console.warn('Welcome email:', error); });
+      }).then(({ data, error }) => {
+        if (error) console.warn('[CareMap] Welcome email invoke error:', error);
+        else console.log('[CareMap] Welcome email sent:', data);
+      }).catch((err) => {
+        console.error('[CareMap] Welcome email failed:', err);
+      });
     }
   };
 </script>

@@ -15,7 +15,19 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, first_name } = (await req.json()) as { email?: string; first_name?: string };
+    let body: { email?: string; first_name?: string };
+    try {
+      body = (await req.json()) as { email?: string; first_name?: string };
+    } catch {
+      console.error('Invalid or missing JSON body');
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const { email, first_name } = body;
+    console.log('send-waitlist-email invoked', { email: email ? `${email.slice(0, 3)}...` : null, first_name });
+
     if (!email || typeof email !== 'string') {
       return new Response(
         JSON.stringify({ error: 'Missing or invalid email' }),
@@ -47,6 +59,7 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
+    console.log('Calling Resend API, from:', from);
     const res = await fetch(RESEND_API, {
       method: 'POST',
       headers: {
@@ -62,6 +75,7 @@ Deno.serve(async (req) => {
     });
 
     const data = await res.json().catch(() => ({}));
+    console.log('Resend response', res.status, data);
     if (!res.ok) {
       console.error('Resend error:', res.status, data);
       return new Response(
