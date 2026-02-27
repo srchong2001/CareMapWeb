@@ -45,7 +45,12 @@ Deno.serve(async (req) => {
     }
 
     const from = Deno.env.get('FROM_EMAIL') || 'CareMap <onboarding@resend.dev>';
+    const imageUrl = Deno.env.get('EMAIL_IMAGE_URL'); // optional: full URL to a hosted image (e.g. https://yoursite.com/logo.png)
     const firstName = first_name?.trim() || 'there';
+
+    const imageBlock = imageUrl
+      ? `<p style="margin: 24px 0 0;"><img src="${imageUrl}" alt="CareMap" style="max-width: 200px; height: auto; display: block;" /></p>`
+      : '';
 
     const html = `
 <!DOCTYPE html>
@@ -56,6 +61,7 @@ Deno.serve(async (req) => {
   <p>Hi ${firstName},</p>
   <p>Thanks for joining the CareMap waitlist. We'll notify you as soon as early access is available.</p>
   <p>— The CareMap team</p>
+  ${imageBlock}
 </body>
 </html>`;
 

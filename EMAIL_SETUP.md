@@ -23,6 +23,11 @@ Optional: to use your own “from” address, add:
 - **Name:** `FROM_EMAIL`
 - **Value:** `CareMap <hello@yourdomain.com>` (use an address from a domain you verified in Resend).
 
+Optional: to show an image (e.g. logo) in the email body, add:
+
+- **Name:** `EMAIL_IMAGE_URL`
+- **Value:** a full public URL to the image (e.g. `https://caremap360.com/images/logo.png`). The image must be publicly accessible.
+
 ## 3. Deploy the Edge Function
 
 From the project root (where `index.html` is), run:
