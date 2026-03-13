@@ -42,7 +42,8 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 20px 48px;
+    height: 80px;
+    padding: 0 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -56,24 +57,28 @@
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
     text-decoration: none;
     color: var(--text);
   }
 
+  nav .logo {
+    height: 100%;
+  }
+
   .logo-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    height: 48px;
+    width: auto;
+    border-radius: 12px;
     object-fit: contain;
     display: block;
   }
 
+  nav .logo-icon {
+    height: 100%;
+  }
+
   .logo-text {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
+    display: none; /* logo only, no company name */
   }
 
   .nav-links {
@@ -611,7 +616,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
+    nav { padding: 0 24px; }
     .nav-links { display: none; }
     section, .hero { padding-left: 24px; padding-right: 24px; }
     .features-grid, .steps { grid-template-columns: 1fr; gap: 20px; }
@@ -628,7 +633,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">
+  <a href="#" class="logo" aria-label="CareMap">
     <img src="images/logo.png" alt="CareMap" class="logo-icon">
     <span class="logo-text">CareMap</span>
   </a>
@@ -785,7 +790,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <a href="#" class="logo">
+    <a href="#" class="logo" aria-label="CareMap">
       <img src="images/logo.png" alt="CareMap" class="logo-icon">
       <span class="logo-text">CareMap</span>
     </a>
