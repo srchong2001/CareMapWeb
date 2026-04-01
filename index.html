@@ -718,14 +718,33 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav {
+      height: auto;
       padding-left: max(20px, env(safe-area-inset-left));
       padding-right: max(20px, env(safe-area-inset-right));
       min-height: calc(72px + env(safe-area-inset-top));
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    /* True center in the bar; hamburger stays on the right */
+    nav .logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      flex-shrink: 0;
+      height: auto;
+      z-index: 1;
     }
 
     nav .logo-icon { max-height: 40px; }
 
-    .nav-toggle { display: inline-flex; flex-direction: column; }
+    .nav-toggle {
+      display: inline-flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+    }
 
     .nav-backdrop {
       display: block;
