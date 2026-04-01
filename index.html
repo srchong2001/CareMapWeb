@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>CareMap — Smarter Member Activation for Health Insurers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
@@ -28,6 +28,11 @@
 
   html { scroll-behavior: smooth; }
 
+  img, svg {
+    max-width: 100%;
+    height: auto;
+  }
+
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
@@ -37,16 +42,26 @@
     overflow-x: hidden;
   }
 
+  body.nav-menu-open {
+    overflow: hidden;
+    touch-action: none;
+  }
+
   /* ── NAV ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
     height: 80px;
-    padding: 0 48px;
+    padding-top: env(safe-area-inset-top);
+    padding-left: max(48px, env(safe-area-inset-left));
+    padding-right: max(48px, env(safe-area-inset-right));
+    padding-bottom: 0;
+    min-height: calc(80px + env(safe-area-inset-top));
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
     background: rgba(244, 248, 250, 0.82);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -98,6 +113,57 @@
   }
 
   .nav-links a:hover { color: var(--primary); }
+
+  .nav-toggle {
+    display: none;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .nav-toggle:hover {
+    border-color: var(--primary-mid);
+    background: var(--primary-light);
+  }
+
+  .nav-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .nav-toggle-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 1px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle-bar + .nav-toggle-bar { margin-top: 5px; }
+
+  nav.nav-open .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  nav.nav-open .nav-toggle-bar:nth-child(2) { opacity: 0; }
+
+  nav.nav-open .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav-backdrop {
+    display: none;
+  }
 
   .btn {
     display: inline-flex;
@@ -616,33 +682,145 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-    section, .hero { padding-left: 24px; padding-right: 24px; }
+    nav {
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      min-height: calc(72px + env(safe-area-inset-top));
+    }
+
+    nav .logo-icon { max-height: 40px; }
+
+    .nav-toggle { display: inline-flex; flex-direction: column; }
+
+    .nav-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      top: calc(72px + env(safe-area-inset-top));
+      background: rgba(26, 46, 53, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+      z-index: 98;
+    }
+
+    nav.nav-open .nav-backdrop {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .nav-links {
+      position: fixed;
+      top: calc(72px + env(safe-area-inset-top));
+      left: 0;
+      right: 0;
+      bottom: auto;
+      z-index: 99;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 16px max(20px, env(safe-area-inset-left)) 20px max(20px, env(safe-area-inset-right));
+      margin: 0;
+      list-style: none;
+      background: rgba(250, 252, 253, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 12px 40px rgba(26, 46, 53, 0.08);
+      max-height: min(420px, calc(100dvh - 72px - env(safe-area-inset-top) - 16px));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    }
+
+    nav.nav-open .nav-links {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .nav-links li { width: 100%; }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-links a.btn {
+      margin-top: 8px;
+      justify-content: center;
+    }
+
+    section, .hero {
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .hero { padding-top: 120px; padding-bottom: 72px; }
+
     .features-grid, .steps { grid-template-columns: 1fr; gap: 20px; }
     .steps::before { display: none; }
-    .trust-grid { grid-template-columns: repeat(2, 1fr); }
-    .hero-actions { flex-direction: column; align-items: center; }
+    .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-actions .btn { justify-content: center; width: 100%; }
+
     .waitlist-form { grid-template-columns: 1fr; }
     .footer-inner { flex-direction: column; gap: 20px; }
-    .cta-card { padding: 40px 28px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .cta-section { padding: 80px max(20px, env(safe-area-inset-left)) 80px max(20px, env(safe-area-inset-right)); }
+    .cta-card { padding: 40px clamp(20px, 5vw, 28px); }
+    .feature-card { padding: 28px 22px; }
+    section { padding-top: 72px; padding-bottom: 72px; }
+  }
+
+  @media (max-width: 480px) {
+    .trust-grid { grid-template-columns: 1fr; gap: 20px; }
+    .hero-badge { font-size: 0.78rem; padding: 8px 16px; }
+    .hero-sub { font-size: 1.05rem; }
   }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="site-nav">
   <a href="#" class="logo" aria-label="CareMap">
     <img src="images/logo.png" alt="CareMap" class="logo-icon">
     <span class="logo-text">CareMap</span>
   </a>
-  <ul class="nav-links">
+  <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
+  <ul class="nav-links" id="primary-nav">
     <li><a href="#features">Features</a></li>
     <li><a href="#how">How it Works</a></li>
     <li><a href="#join" class="btn btn-primary" style="padding: 10px 24px; color: white;">Join Waitlist</a></li>
   </ul>
 </nav>
+<div class="nav-backdrop" aria-hidden="true"></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -824,12 +1002,42 @@
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Smooth nav scroll
+  const siteNav = document.getElementById('site-nav');
+  const navToggle = siteNav?.querySelector('.nav-toggle');
+  const navBackdrop = document.querySelector('.nav-backdrop');
+
+  function setNavOpen(open) {
+    if (!siteNav || !navToggle) return;
+    siteNav.classList.toggle('nav-open', open);
+    document.body.classList.toggle('nav-menu-open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+
+  navToggle?.addEventListener('click', () => {
+    setNavOpen(!siteNav.classList.contains('nav-open'));
+  });
+
+  navBackdrop?.addEventListener('click', () => setNavOpen(false));
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) setNavOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setNavOpen(false);
+  });
+
+  // Smooth in-page scroll (skip bare "#" — invalid querySelector and default top-nav is fine)
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      setNavOpen(false);
+      if (!href || href === '#' || href === '#top') return;
+      const target = document.querySelector(href);
+      if (!target) return;
       e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      target.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
