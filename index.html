@@ -26,7 +26,12 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
 
   img, svg {
     max-width: 100%;
@@ -40,6 +45,9 @@
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
   }
 
   body.nav-menu-open {
@@ -51,6 +59,9 @@
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     z-index: 100;
     height: 80px;
     padding-top: env(safe-area-inset-top);
@@ -78,6 +89,8 @@
 
   nav .logo {
     height: 100%;
+    min-width: 0;
+    flex-shrink: 1;
   }
 
   .logo-icon {
@@ -90,6 +103,9 @@
 
   nav .logo-icon {
     height: 100%;
+    max-width: min(200px, 52vw);
+    width: auto;
+    object-fit: contain;
   }
 
   .logo-text {
@@ -207,19 +223,25 @@
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 140px 48px 100px;
     position: relative;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
-  /* Soft ambient background */
+  /* Soft ambient background (clipped to .hero so it never widens the page) */
   .hero::before {
     content: '';
     position: absolute;
     top: -20%; right: -10%;
-    width: 700px; height: 700px;
+    width: min(700px, 160vw);
+    height: min(700px, 160vw);
     background: radial-gradient(circle, rgba(58, 168, 162, 0.07) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
@@ -229,14 +251,19 @@
     content: '';
     position: absolute;
     bottom: -10%; left: -5%;
-    width: 500px; height: 500px;
+    width: min(500px, 120vw);
+    height: min(500px, 120vw);
     background: radial-gradient(circle, rgba(11, 110, 110, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
   }
 
   .hero-inner {
+    width: 100%;
     max-width: 820px;
+    min-width: 0;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -339,6 +366,10 @@
   /* ── SECTIONS ── */
   section {
     padding: 100px 48px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   .section-label {
@@ -617,6 +648,10 @@
     padding: 48px;
     text-align: center;
     border-top: 1px solid var(--border);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   .footer-inner {
@@ -705,7 +740,7 @@
       z-index: 98;
     }
 
-    nav.nav-open .nav-backdrop {
+    body.nav-menu-open .nav-backdrop {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
