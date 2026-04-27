@@ -1513,7 +1513,7 @@
           <div class="demo-metric-row">
             <span class="demo-pill">Activation index ↑ 4.2 pts</span>
             <span class="demo-pill">At-risk cohorts 12</span>
-            <span class="demo-pill">Next-best plays 6</span>
+            <span class="demo-pill">Next-best segments 6</span>
           </div>
           <div class="demo-bars" aria-hidden="true">
             <div class="demo-bar"></div><div class="demo-bar"></div><div class="demo-bar"></div><div class="demo-bar"></div><div class="demo-bar"></div>
@@ -1531,19 +1531,19 @@
         </div>
         <div class="demo-panel" id="panel-segments" role="tabpanel" aria-labelledby="tab-segments">
           <h4>Hidden segments (sample)</h4>
-          <p>Pick a segment to preview the kind of activation play CareMap would recommend next.</p>
+          <p>Pick a row to preview the activation path CareMap would recommend for that segment next.</p>
           <div class="demo-segments">
-            <button type="button" class="demo-seg" data-play="Digital-ready chronic cohort with low portal uptake—prioritize omnichannel nudges and pharmacist touchpoints.">
-              <span>Chronic · digitally adjacent</span><span>Play →</span>
+            <button type="button" class="demo-seg" data-segment="Digital-ready chronic cohort with low portal uptake—prioritize omnichannel nudges and pharmacist touchpoints.">
+              <span>Chronic · digitally adjacent</span><span>Segment →</span>
             </button>
-            <button type="button" class="demo-seg" data-play="Post-discharge members with rising claims velocity—pair care management calls with SMS windowing.">
-              <span>Post-acute · rising risk</span><span>Play →</span>
+            <button type="button" class="demo-seg" data-segment="Post-discharge members with rising claims velocity—pair care management calls with SMS windowing.">
+              <span>Post-acute · rising risk</span><span>Segment →</span>
             </button>
-            <button type="button" class="demo-seg" data-play="Pediatric Medicaid families with missed well visits—coordinate community partners + transportation benefits messaging.">
-              <span>Pediatric Medicaid · care gaps</span><span>Play →</span>
+            <button type="button" class="demo-seg" data-segment="Pediatric Medicaid families with missed well visits—coordinate community partners + transportation benefits messaging.">
+              <span>Pediatric Medicaid · care gaps</span><span>Segment →</span>
             </button>
           </div>
-          <p class="demo-tooltip" id="segment-tooltip"><strong>Selected play:</strong> choose a segment above.</p>
+          <p class="demo-tooltip" id="segment-tooltip"><strong>Selected segment:</strong> pick a row above.</p>
         </div>
       </div>
     </div>
@@ -1691,7 +1691,7 @@
     const mapTips = {
       north: 'North corridor: engagement lagging 11 pts vs. benchmark—suggested lever: temporal SMS + care manager call within 48h.',
       central: 'Central metro: high clinical complexity but strong digital propensity—prioritize portal rescue + pharmacist co-outreach.',
-      south: 'Southern region: transportation + language friction flagged—recommended play: community partner bundle + translated IVR.',
+      south: 'Southern region: transportation + language friction flagged—recommended segment: community partner bundle + translated IVR.',
     };
 
     function showPanel(id) {
@@ -1725,9 +1725,9 @@
       btn.addEventListener('click', () => {
         demoRoot.querySelectorAll('.demo-seg').forEach((b) => b.classList.remove('is-picked'));
         btn.classList.add('is-picked');
-        const play = btn.dataset.play || '';
+        const detail = btn.dataset.segment || '';
         const el = document.getElementById('segment-tooltip');
-        if (el) el.innerHTML = '<strong>Selected play:</strong> ' + play;
+        if (el) el.innerHTML = '<strong>Selected segment:</strong> ' + detail;
       });
     });
 
